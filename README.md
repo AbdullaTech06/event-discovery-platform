@@ -5,7 +5,7 @@ Gather is a full-stack web application designed for students and young professio
 This project was built as a solution for the **GDG Hackathon Solasta 2026**.
 
 ## 🚀 Live Demo
-**[Insert your GitHub Pages Link Here]**
+https://abdullatech06.github.io/event-discovery-platform/#
 
 ---
 
