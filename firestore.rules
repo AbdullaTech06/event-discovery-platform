@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isEventOwnerById(eventId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/events/$(eventId)).data.uid == request.auth.uid;
+    }
+
+    // Events: anyone can read; only authenticated users can create; only creator can update/delete
+    match /events/{eventId} {
+      allow read: if true;
+      // Prevent spoofing: client must write its own uid into the document
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid;
+
+      allow update, delete: if signedIn()
+        && resource.data.uid == request.auth.uid;
+    }
+    // RSVPs: anyone can read; only authenticated users can create/delete their own
+    match /rsvps/{rsvpId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.eid is string;
+
+      // Allow RSVP owner to delete, OR event owner to delete RSVPs for their event
+      allow delete: if signedIn()
+        && (resource.data.uid == request.auth.uid
+          || isEventOwnerById(resource.data.eid));
+    }
+    // User profiles: only the owner can read/write their own doc
+    match /users/{userId} {
+      allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+  }
+}

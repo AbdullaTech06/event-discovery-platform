@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gather — Community Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+<nav>
+  <a class="logo" href="#">GATHER<span>.</span></a>
+  <div class="nav-r" id="navR">
+    <button class="btn btn-g" onclick="openAuth('login')">Log in</button>
+    <button class="btn btn-p" onclick="openAuth('register')">Sign up</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">Community Events Platform</div>
+    <h1>FIND YOUR<span class="hl">NEXT BIG</span>MOMENT.</h1>
+    <p class="hero-sub">Discover workshops, meetups, hackathons, and cultural events happening in your city — all in one place.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="hEv">0</div><div class="stat-l">Events</div></div>
+    <div class="stat"><div class="stat-n" id="hUs">0</div><div class="stat-l">Organisers</div></div>
+  </div>
+</section>
+
+<main id="main">
+<div class="toolbar">
+  <div class="sw">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="srch" placeholder="Search by name or description…" aria-label="Search events by name or description">
+    <button class="btn btn-p btn-sm" onclick="renderEvents()">Search</button>
+  </div>
+  <div class="chips">
+    <button class="chip active" onclick="setFilter('All',this)">All</button>
+    <button class="chip" onclick="setFilter('Tech',this)">⚡ Tech</button>
+    <button class="chip" onclick="setFilter('Arts',this)">🎨 Arts</button>
+    <button class="chip" onclick="setFilter('Sports',this)">🏅 Sports</button>
+    <button class="chip" onclick="setFilter('Education',this)">📚 Education</button>
+    <button class="chip" onclick="setFilter('Music',this)">🎵 Music</button>
+    <button class="chip" onclick="setFilter('Food',this)">🍜 Food</button>
+  </div>
+</div>
+
+<section class="events-sec">
+  <div class="sec-hdr">
+    <div class="sec-t">UPCOMING EVENTS</div>
+    <div class="sec-c" id="secC"></div>
+  </div>
+  <div class="grid" id="grid"><div class="empty"><div class="empty-i">⏳</div><div class="empty-t">Loading…</div></div></div>
+</section>
+</main>
+
+<!-- AUTH -->
+<div class="ov" id="authOv" onclick="bgClose(event,'authOv')">
+  <div class="modal auth-m">
+    <button class="mc" onclick="close_('authOv')" aria-label="Close">×</button>
+    <div class="m-tag" id="aTag"></div>
+    <div class="m-ttl" id="aTtl"></div>
+    <div id="aBody"></div>
+  </div>
+</div>
+
+<!-- CREATE -->
+<div class="ov" id="crOv" onclick="bgClose(event,'crOv')">
+  <div class="modal cr-m">
+    <button class="mc" onclick="close_('crOv')" aria-label="Close">×</button>
+    <div class="m-tag">NEW EVENT</div>
+    <div class="m-ttl">Create Event</div>
+    <div class="fg"><label>Event Name *</label><input type="text" id="cN" placeholder="Enter a compelling name…"></div>
+    <div class="fg">
+      <label>Description * <span style="font-weight:300;text-transform:none;letter-spacing:0">(max 500 chars)</span></label>
+      <textarea id="cD" rows="4" maxlength="500" placeholder="What's this event about?"></textarea>
+      <div class="cc"><span id="cLen">0</span> / 500</div>
+    </div>
+    <div class="two">
+      <div class="fg"><label>Date *</label><input type="date" id="cDt"></div>
+      <div class="fg"><label>Time *</label><input type="time" id="cTm"></div>
+    </div>
+    <div class="fg"><label>Location *</label><input type="text" id="cL" placeholder="City or venue name…"></div>
+    <div class="fg"><label>Category *</label>
+      <select id="cC"><option value="">Select a category</option><option>Tech</option><option>Arts</option><option>Sports</option><option>Education</option><option>Music</option><option>Food</option></select>
+    </div>
+    <div class="fg"><label>Cover Image URL <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></label><input type="url" id="cI" placeholder="https://…"></div>
+    <button class="btn btn-p" style="width:100%;padding:13px;font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-top:6px" onclick="publishEvent()">Publish Event</button>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="ov" id="detOv" onclick="bgClose(event,'detOv')">
+  <div class="modal det-m">
+    <button class="mc" onclick="close_('detOv')" aria-label="Close">×</button>
+    <div class="det-h" id="detH"></div>
+    <div class="det-b" id="detB"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="ov" id="dashOv" onclick="bgClose(event,'dashOv')">
+  <div class="modal da-m">
+    <button class="mc" onclick="close_('dashOv')" aria-label="Close">×</button>
+    <div class="m-tag">MY EVENTS</div>
+    <div class="m-ttl">Dashboard</div>
+    <div id="dashB"></div>
+  </div>
+</div>
+
+<div id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
